@@ -1,7 +1,10 @@
-import { InputHTMLAttributes } from "react";
+import { ChangeEventHandler } from "react";
+import { ChangeEvent } from "react";
+import { SyntheticEvent } from "react";
+interface InputCustomProps {
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 
-interface listProps extends InputHTMLAttributes<HTMLInputElement> {
-    room: number;
+    inputValue: string;
 };
 
-export default listProps
+export default InputCustomProps

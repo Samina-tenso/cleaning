@@ -1,29 +1,28 @@
 'use client'
 import React, { FC } from 'react';
 import { useState } from 'react';
+import InputCustomProps from 'app/types/Input';
 
 
-const Input: FC = () => {
+import { IconButton, Input, Typography } from '../../types/tailwind_comp'
 
-    const [inputValue, setInputValue] = useState<string>('');
+const RoomInput: React.FC<InputCustomProps> = ({ onChange, inputValue }) => {
+    const [errors, setErrors] = useState({})
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault()
-        setInputValue(e.target.value);
-    };
     return (
-        <div /*wrapper*/>
-            <label htmlFor="room-input">Room input</label>
-            <input type="text" placeholder='Add room numbers' value={inputValue} onChange={(event) => handleInputChange(event)}>
-
-
-            </input>
+        <div className='w-80'>
+            <Input
+                type="number"
+                maxLength={4}
+                value={inputValue}
+                label="Enter room number"
+                className='appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'
+                onChange={onChange} />
 
         </div>
-
     );
 
 
 };
 
-export default Input
+export default RoomInput
