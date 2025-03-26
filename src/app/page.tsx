@@ -5,7 +5,7 @@ import RoomInput from "./components/Input";
 import RoomList from "./components/RoomList";
 import React, { useState } from 'react';
 import { createList } from "./actions";
-
+import { useFormStatus } from "react-dom";
 
 //import { Button } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
@@ -36,7 +36,7 @@ export default function Home() {
     setInputValue('')
   };
 
-
+  const { pending } = useFormStatus();
   return (
     <div className="flex">
 
@@ -45,7 +45,7 @@ export default function Home() {
         <RoomInput onChange={onChange} inputValue={inputValue} />
         <Button variant="outlined" onClick={onClick} disabled={!inputValue}> Add room numbers</Button>
         <RoomList rooms={rooms} />
-        <Button type="submit" variant="gradient" disabled={!rooms}>  Sumbit Form </Button>
+        <Button type="submit" variant="gradient" disabled={!rooms || pending} >  Sumbit Form </Button>
         <p aria-live="polite" className="sr-only" role="status">
 
         </p>
