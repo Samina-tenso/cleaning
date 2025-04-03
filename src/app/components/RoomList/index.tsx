@@ -1,11 +1,11 @@
-import RoomProps from 'app/types/Rooms';
-import React, { FC } from 'react';
 
+import React, { FC } from 'react';
+import { FormValues } from 'app/types/Input';
 import { List, ListItem, ListItemSuffix, IconButton } from '../../types/tailwind_comp'
 
 
 
-const RoomList: FC<RoomProps> = ({ rooms }) => {
+const RoomList: FC<FormValues> = ({ rooms }) => {
     function Trash() {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
@@ -17,9 +17,9 @@ const RoomList: FC<RoomProps> = ({ rooms }) => {
 
         <List>
             {rooms && (
-                rooms.map((room, index) => (
+                rooms.map((r, index) => (
                     <ListItem ripple={false} key={index} className='py-1 pr-1 pl-4'>
-                        <p>{room}</p>
+                        <p>{r}</p>
                         <ListItemSuffix className="ml-auto grid place-items-center justify-self-end">
                             <IconButton variant="text" color="blue-gray" className="flex items-center gap-3">
                                 <Trash />

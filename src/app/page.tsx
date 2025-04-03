@@ -3,13 +3,14 @@
 import Image from "next/image";
 import RoomInput from "./components/Input";
 import RoomList from "./components/RoomList";
-import React, { useState } from 'react';
-import { createList } from "./actions";
-import { useFormStatus } from "react-dom";
-
-//import { Button } from "@material-tailwind/react";
+import React, { startTransition, useState } from 'react';
+//import { createList } from "./actions";
+import { useFormState, useFormStatus } from "react-dom";
 import { Button } from "@material-tailwind/react";
-import type { ListProps } from "@material-tailwind/react";
+import { useForm, Controller, SubmitHandler } from 'react-hook-form'
+//import { FormValues } from "./types/Input";
+import { FormValues } from "./types/Input";
+
 
 
 
@@ -18,38 +19,47 @@ export default function Home() {
 
   const [inputValue, setInputValue] = useState<string>('');
 
-  const [rooms, setRooms] = useState<string[]>([]);
-  const initialState = {
-    message: "",
-  };
+  //const [rooms, setRooms] = useState<FormData[]>([]);
+
+  const onSubmit = (data: FormValues) => console.log(data)
+
+  //setRooms(prevState => [...prevState, data]);
 
 
-  const onChange: React.ComponentProps<"input">["onChange"] = (e) => {
+  const { pending } = useFormStatus();
+  const { handleSubmit, control, setValue, watch } = useForm<FormValues>({
+    defaultValues: { rooms: [] },
+  });
+  const rooms = watch('rooms');
+
+  const handleChange: React.ComponentProps<"input">["onChange"] = (e) => {
     e.preventDefault()
     setInputValue(e.target.value);
   };
 
-  const onClick: React.ComponentProps<"button">["onClick"] = (e) => {
-
+  const handleClick: React.ComponentProps<"button">["onClick"] = (e) => {
     e.preventDefault()
-    setRooms(prevState => [...prevState, inputValue]);
+
+    setValue("rooms", [...rooms, inputValue]);
     setInputValue('')
+
+
   };
 
-  const { pending } = useFormStatus();
+
+
   return (
     <div className="flex">
-
-      <form name="room_numbers" /* action={createList} */ className=" flex items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <label htmlFor="roomList"> Add List of rooms</label>
-        <RoomInput onChange={onChange} inputValue={inputValue} />
-        <Button variant="outlined" onClick={onClick} disabled={!inputValue}> Add room numbers</Button>
+      <h2> Add List of rooms</h2>
+      <RoomInput inputValue={inputValue} handleChange={handleChange} />
+      <form id="roomNumbers" onSubmit={handleSubmit(onSubmit)} className=" flex items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+        <Button variant="outlined" disabled={pending} onClick={handleClick} > Add room numbers</Button>
         <RoomList rooms={rooms} />
-        <Button type="submit" variant="gradient" disabled={!rooms || pending} >  Sumbit Form </Button>
         <p aria-live="polite" className="sr-only" role="status">
-
         </p>
+        <Button variant="gradient" type="submit" >  Sumbit Form </Button>
       </form>
+
     </div>
   );
 }
