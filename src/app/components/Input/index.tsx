@@ -7,12 +7,14 @@ import { InputProps } from 'app/types/Input';
 import { IconButton, Input, Typography } from '../../types/tailwind_comp'
 import { Controller, useForm, useController, UseControllerProps } from 'react-hook-form';
 
-const RoomInput: React.FC<InputProps> = ({ handleChange, inputValue }) => {
+const RoomInput: React.FC<InputProps> = ({ handleChange, inputValue, errors, isValid }) => {
+
     return (
         <div className='w-80'>
             <label >
 
                 <Input
+                    pattern='/^\S*$/'
                     type="number"
                     name="room"
                     maxLength={4}
@@ -21,6 +23,7 @@ const RoomInput: React.FC<InputProps> = ({ handleChange, inputValue }) => {
                     label="Enter room number"
                     className='appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'
                     id="roomNumberInput" />
+                {errors?.rooms?.type === 'pattern' && <span> No space is allowed</span>}
             </label>
         </div>
     );

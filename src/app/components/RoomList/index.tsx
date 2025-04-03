@@ -6,9 +6,7 @@ import { TrashIcon } from '@heroicons/react/24/outline';
 
 
 const RoomList: FC<FormValues> = ({ rooms }) => {
-
     return (
-
         <List>
             {rooms && (
                 rooms.map((r, index) => (
@@ -23,11 +21,8 @@ const RoomList: FC<FormValues> = ({ rooms }) => {
                 )
                 )
             )
-
             }
         </List>
-
     );
-
 };
 export default RoomList
