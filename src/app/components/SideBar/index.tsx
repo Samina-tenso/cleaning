@@ -2,6 +2,7 @@
 import React from 'react';
 import { SetStateAction } from 'react';
 import NavLinks from 'app/dashboard/Nav';
+import Link from 'next/link';
 import {
     Card,
     Typography,
@@ -46,7 +47,7 @@ export function SideBar() {
 
         {
             name: 'Room List',
-            href: '/dashboard/roomlist',
+            href: '/dashboard/list',
             icon: KeyIcon,
 
         },
@@ -65,14 +66,20 @@ export function SideBar() {
                 {links.map((link, index) => {
                     const LinkIcon = link.icon;
                     return (
-                        <ListItem className="p-0" selected={open === 1} key={index}>
-                            <ListItemPrefix>
-                                <LinkIcon className="h-5 w-5" />
-                            </ListItemPrefix>
-                            <Typography color="blue-gray" className="mr-auto font-normal">
-                                {link.name}
-                            </Typography>
-                        </ListItem>
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                        >
+
+                            <ListItem className="p-0" selected={open === 1} >
+                                <ListItemPrefix>
+                                    <LinkIcon className="h-5 w-5" />
+                                </ListItemPrefix>
+                                <Typography color="blue-gray" className="mr-auto font-normal">
+                                    {link.name}
+                                </Typography>
+                            </ListItem>
+                        </Link>
                     )
                 })}
                 <Accordion

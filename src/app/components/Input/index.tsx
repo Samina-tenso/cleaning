@@ -10,11 +10,10 @@ import { Controller, useForm, useController, UseControllerProps } from 'react-ho
 const RoomInput: React.FC<InputProps> = ({ handleChange, inputValue, errors, isValid }) => {
 
     return (
-        <div className='w-80'>
+        <div>
             <label >
-
                 <Input
-                    pattern='/^\S*$/'
+                    pattern='^[^\W_]{3,48}$'
                     type="number"
                     name="room"
                     maxLength={4}
