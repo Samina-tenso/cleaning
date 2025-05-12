@@ -1,7 +1,7 @@
 'use client'
 import React, { FC } from 'react';
 import { useState } from 'react';
-import { InputProps } from 'app/types/Input';
+import { InputProps } from 'app/types/Form';
 
 
 import { IconButton, Input, Typography } from '../../types/tailwind_comp'
