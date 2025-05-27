@@ -11,6 +11,9 @@
     "format:fix": "prettier --write --ignore-path .gitignore .",
     "postinstall": "prisma generate --no-engine"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@material-tailwind/html": "^2.3.2",
