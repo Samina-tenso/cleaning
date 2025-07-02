@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -14,27 +13,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id Int @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  role String
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  role     String
   password String?
 
   rooms Room[]
-  
-  @@map(name: "users")
 
+  @@map(name: "users")
 }
 
-
 model Room {
-  id Int @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
   number String
-  clean Boolean @default(false)
+  clean  Boolean @default(false)
 
   assignedId Int?
-  assigned User? @relation(fields: [assignedId], references:[id])
+  assigned   User? @relation(fields: [assignedId], references: [id])
 
+  @@map(name: "rooms")
 }
