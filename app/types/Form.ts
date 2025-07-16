@@ -5,6 +5,13 @@ import { SyntheticEvent } from "react";
 import { UseFormSetValue } from 'react-hook-form';
 import { inter } from "../fonts";
 
+export type AssignedFormValues = {
+    assignedRooms: {
+        roomId: string | number;
+        userId: string | number;
+
+    }[];
+};
 
 export interface InputProps {
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -19,22 +26,23 @@ export type FormValues = {
 };
 
 export interface Room {
-    id: number;
-    number: string;
-    assignedId?: number | null;
+    id: string | number;
+    number: string
+    assignedId?: string | number | null;
     assigned?: User | null;
 
 };
 export type OrderedRoomsCreatedProps = {
     rooms: Room[];
+    users: User[];
 };
 export interface User {
-    id: number;
+    id: string | number;
     email: string;
-    name: string | undefined;
+    name: string | null;
     role: string;
-    password: string | undefined;
-    rooms: Room[];
+    password: string | null;
+    rooms?: Room[] | null; // <-- make this optional
 };
 
 
@@ -43,3 +51,8 @@ export type RoomsProps = {
     setValue: UseFormSetValue<FormValues>;
 };
 
+export type UserProps = {
+    users: User[];
+    setValue: UseFormSetValue<AssignedFormValues>;
+
+}

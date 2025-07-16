@@ -1,47 +1,18 @@
-
-import { ListItemPrefix, Typography } from '@material-tailwind/react';
-import { List, ListItem, ListItemSuffix, IconButton } from '../../types/tailwind_comp'
-import { FormValues, Room } from '../../types/Form';
+'use server'
+import AssignRoomList from '../../components/AssignRoomList';
 import prisma from '../../lib/prisma';
-const users = [
-    {
-        name: 'Yunna',
-        color: 'red'
+import { Room, User } from '../../types/Form';
 
-    },
-    {
-        name: 'Yunna',
-        color: 'blue'
 
-    },
-    {
-        name: 'Yunna',
-        color: 'yellow'
-
-    },
-]
-export default async function orderedRooms() {
+export default async function AssignPage() {
     const rooms: Room[] = await prisma.room.findMany();
+    const users: User[] = await prisma.user.findMany();
+
 
     return (
-        <List>
-
-            {rooms && (
-                rooms.map((room: Room, index: number) => (
-                    <ListItem ripple={false} key={index} className='py-1 pr-1 pl-4 border-b-2' >
-                        {/* {users.map((u, index) => (
-                            <div key={index} className="bg-{{user.color && `${user.color}}">
-                                <Typography>
-                                    {u.name}
-                                </Typography>
-                            </div>
-                        ))} */}
-                        <p>{room.number}</p>
-                    </ListItem>
-                )
-                )
-            )
-            }
-        </List>
-    )
+        <section>
+            <h1 > Assigned rooms</h1>
+            <AssignRoomList rooms={rooms} users={users} />
+        </section>
+    );
 };

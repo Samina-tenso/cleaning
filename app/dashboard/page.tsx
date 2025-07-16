@@ -6,11 +6,10 @@ import prisma from '../lib/prisma';
 import { Room } from "../types/Form";
 
 
-export default async function Page() {
-    const rooms: Room[] = await prisma.room.findMany();
-    console.log(rooms, 'dashboard page');
+export default function Page() {
+
     return (
-        <section className="flex-col space-y-16">
+        <section className=" ">
             <h2>Dashboard Page</h2>
 
 
