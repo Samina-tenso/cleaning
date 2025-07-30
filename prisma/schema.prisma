@@ -14,24 +14,71 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  role     String
-  password String?
-
-  rooms Room[]
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  role          String    @default("user")
+  password      String?
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  sessions      Session[]
+  accounts      Account[]
+  rooms         Room[]
 
   @@map(name: "users")
 }
 
 model Room {
-  id     Int     @id @default(autoincrement())
-  number String
-  clean  Boolean @default(false)
-
-  assignedId Int?
-  assigned   User? @relation(fields: [assignedId], references: [id])
+  id         String  @id @default(cuid())
+  number     String
+  clean      Boolean @default(false)
+  assignedId String?
+  assigned   User?   @relation(fields: [assignedId], references: [id])
 
   @@map(name: "rooms")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  expiresAt    DateTime
+  sessionToken String   @unique
+  createdAt    DateTime
+  updatedAt    DateTime
+  ipAddress    String?
+  userAgent    String?
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id                String    @id
+  identifier        String
+  verificationToken String    @unique
+  expiresAt         DateTime
+  createdAt         DateTime?
+  updatedAt         DateTime?
+
+  @@map("verification")
 }

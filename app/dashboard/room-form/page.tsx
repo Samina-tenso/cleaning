@@ -9,7 +9,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 //import { FormValues } from "./types/Input";
 import { FormValues } from "../../types/Form";
 import prisma from "../../lib/prisma";
-import { createRooms } from "../../actions";
+import { createRooms } from "../../api/actions";
 
 
 

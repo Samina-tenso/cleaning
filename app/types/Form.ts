@@ -26,9 +26,9 @@ export type FormValues = {
 };
 
 export interface Room {
-    id: string | number;
+    id: string;
     number: string
-    assignedId?: string | number | null;
+    assignedId?: string | null;
     assigned?: User | null;
 
 };
@@ -37,7 +37,7 @@ export type OrderedRoomsCreatedProps = {
     users: User[];
 };
 export interface User {
-    id: string | number;
+    id: string;
     email: string;
     name: string | null;
     role: string;
@@ -56,3 +56,11 @@ export type UserProps = {
     setValue: UseFormSetValue<AssignedFormValues>;
 
 }
+
+export type newUser = {
+    name: string;
+    email: string;
+    password: string;
+    role?: string; // Optional, default can be set in the database
+}
+

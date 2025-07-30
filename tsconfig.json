@@ -38,7 +38,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/types/Rooms.ts",
-    "app/types/Form.ts"
+    "app/types/Form.ts",
+    "app/error"
   ],
   "exclude": [
     "node_modules"

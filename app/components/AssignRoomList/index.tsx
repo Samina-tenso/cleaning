@@ -6,6 +6,8 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { RoomsProps } from '../../types/Form';
 import prisma from '../../lib/prisma';
 import { Button } from '../../types/tailwind_comp'
+import { updateAssignedRooms } from '../../api/actions';
+import { useState } from 'react';
 
 const users = [
     {
@@ -32,12 +34,7 @@ export default function AssignRoomForm({ rooms, users }: OrderedRoomsCreatedProp
             users: users || [],
         },
     });
-    const createAssignedRooms = (formState: OrderedRoomsCreatedProps) => {
-
-        console.log(formState, 'Assigned Rooms Data');
-        // Here you can handle the data submission, e.g., send it to your API or database
-        // createAssignedRooms(data);
-    };
+    // suggestion: 1. create new array of rooms where values have changed. 2. remove duplications(room id, only use latest value) 3.pass to update user. 
 
     const handleSelect = (selectedUserId: string | undefined, roomId: string) => {
         if (!selectedUserId) return;
@@ -45,7 +42,7 @@ export default function AssignRoomForm({ rooms, users }: OrderedRoomsCreatedProp
         if (rooms != undefined) {
             const updatedRooms = rooms;
             updatedRooms.forEach((room, i) => {
-                if (room.id.toString() === roomId) {
+                if (room.id === roomId) {
                     return updatedRooms[i] = { ...room, assignedId: selectedUserId };
                 }
                 return room;
@@ -66,7 +63,7 @@ export default function AssignRoomForm({ rooms, users }: OrderedRoomsCreatedProp
     };
 
     return (
-        <form id="assigned-rooms-form" onSubmit={handleSubmit(createAssignedRooms)}>
+        <form id="assigned-rooms-form" onSubmit={handleSubmit(updateAssignedRooms)} className="flex flex-col space-y-4 p-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <List className=' shadow-lg ' >
                 {rooms && (
                     rooms.map((room: Room, index: number) => (

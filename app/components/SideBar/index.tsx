@@ -46,8 +46,8 @@ export function SideBar() {
         },
 
         {
-            name: 'Room List',
-            href: '/dashboard/room-list',
+            name: 'My rooms',
+            href: `/dashboard/${id}`,
             icon: KeyIcon,
 
         },
