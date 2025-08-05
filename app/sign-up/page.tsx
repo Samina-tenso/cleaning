@@ -1,95 +1,98 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { signUp } from "../lib/auth-client";
-import { use, useState } from "react";
+import { useState } from "react";
 import { Card, Typography, Input, Button } from "@material-tailwind/react";
-import { createUser } from "../api/actions";
-import Form from "next/form";
-import { useFormState } from "react-hook-form";
-import { FormValues } from "../types/Form";
-
-import { create } from "domain";
-import { useFormStatus } from "react-dom";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-
+import { authClient } from "../lib/auth-client"; // adjust path as needed
+import { SignupSchema } from "../lib/signup-schema";
+import { on } from "events";
+import { useAuthState } from "../hooks/useAuthState"; // adjust path as needed
+import { signUpUser } from "../api/actions";
+type SignupFormData = z.infer<typeof SignupSchema>;
 
 export default function SignUpPage() {
     const router = useRouter();
-    const [completeAction, setCompleteAction] = useState<boolean | null>(null);
     const [message, setMessage] = useState<string | null>(null);
-    const { pending } = useFormStatus();
+    const { error, setError, success, setSuccess, loading, setLoading, resetState } = useAuthState();
 
+    // 2. Setup useForm with Zod resolver
+    const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>({
 
-    const onSubmit = async (data: FormData) => {
-        const result = await createUser(data);
-        if (result?.error) {
-            setCompleteAction(false);
-            setMessage(result.error);
-        } else if (result?.success) {
-            setCompleteAction(true);
-            setMessage(result.description);
-            router.push("/dashboard"); // role dependent redirect
+        resolver: zodResolver(SignupSchema),
+        defaultValues: {
+            name: "",
+            email: "",
+            password: ""
+        },
+    });
+
+    // 3. Handle form submission
+    async function onSubmit(values: z.infer<typeof SignupSchema>) {
+
+        setLoading(true);
+        setMessage("");
+        try {
+            const { success, error } = await signUpUser(values.name, values.email, values.password);
+            if (success) {
+                setMessage("User has been created!");
+                router.replace("/dashboard");
+            } else {
+                setMessage(error || "An error occurred during sign up");
+            }
+        } catch (error: any) {
+            setMessage(error?.message || "An error occurred during sign up");
+        } finally {
+            setLoading(false);
         }
     };
 
 
-
-
     return (
-        <Card color="transparent" shadow={true} className="p-6 sm:p-8  max-w-md mx-auto my-8">
-            <Form action={onSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-                <div className="mb-1 flex flex-col gap-6"> <h2 className="text-2xl mb-4">Sign Up</h2>
-                    <Typography variant="small" className="mt-2 mb-4 text-gray-600">
-                        Name
-                    </Typography>
+        <Card color="transparent" shadow={true} className="p-6 sm:p-8 max-w-md mx-auto my-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+                <div className="mb-1 flex flex-col gap-6">
+                    <h2 className="text-2xl mb-4">Sign Up</h2>
+                    <Typography variant="small" className="mt-2 mb-4 text-gray-600">Name</Typography>
                     <Input
-                        required
+                        disabled={loading}
                         type="text"
-                        size="lg"
-                        placeholder="name"
-                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                            className: "before:content-none after:content-none",
-                        }}
+                        placeholder="Name"
+                        {...register("name")}
+                        error={!!errors.name}
                     />
-                    <Typography variant="small" className="mt-2 mb-4 text-gray-600">
-                        Email
-                    </Typography>
-                    <Input
-                        type="email"
-                        required
-                        size="lg"
-                        placeholder="name@email.com"
-                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                            className: "before:content-none after:content-none",
-                        }}
-                    />
+                    {errors.name && <span className="text-red-500">{errors.name.message}</span>}
 
-                    <Typography variant="small" className="mt-2 mb-4 text-gray-600">
-                        Password
-                    </Typography>
+                    <Typography variant="small" className="mt-2 mb-4 text-gray-600">Email</Typography>
                     <Input
-                        required
-                        type="password"
-                        size="lg"
-                        placeholder="password"
-                        minLength={6}
-                        className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                        labelProps={{
-                            className: "before:content-none after:content-none",
-                        }}
+                        disabled={loading}
+                        type="email"
+                        placeholder="name@email.com"
+                        {...register("email")}
+                        error={!!errors.email}
                     />
-                    <Typography variant="small" className="mt-2 mb-4 text-gray-600">
-                        {completeAction === false && message ? message : ""}
-                        {completeAction === true && message ? message : ""}
-                    </Typography>
-                    <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
-                        Sign Up
-                    </button>
+                    {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+
+                    <Typography variant="small" className="mt-2 mb-4 text-gray-600">Password</Typography>
+                    <Input
+                        disabled={loading}
+                        type="password"
+                        placeholder="Password"
+                        {...register("password")}
+                        error={!!errors.password}
+                    />
+                    {errors.password && <span className="text-red-500">{errors.password.message}</span>}
+
+                    {message && <Typography variant="small" className="mt-2 mb-4 text-gray-600">{message}</Typography>}
+
+                    <Button type="submit" disabled={loading} className="w-full bg-blue-500 text-white p-2 rounded">
+                        {loading ? "Signing Up..." : "Sign Up"}
+                    </Button>
                     <p>Already have an account? <Link href="/sign-in" className="text-blue-500">Sign In</Link></p>
                 </div>
-            </Form>
+            </form>
         </Card>
     );
 }

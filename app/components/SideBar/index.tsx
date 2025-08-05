@@ -45,12 +45,12 @@ export function SideBar() {
             icon: UserCircleIcon,
         },
 
-        {
-            name: 'My rooms',
-            href: `/dashboard/${id}`,
-            icon: KeyIcon,
+        // {
+        //     name: 'My rooms',
+        //     // href: `/dashboard/${id}`,
+        //     icon: KeyIcon,
 
-        },
+        // },
 
 
     ];

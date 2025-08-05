@@ -1,5 +1,5 @@
 "use server";
-import { success } from "better-auth";
+import { auth } from "../lib/auth";
 import prisma from "../lib/prisma";
 import { FormValues, OrderedRoomsCreatedProps } from "../types/Form";
 import { Suspense } from "react";
@@ -62,36 +62,26 @@ export async function assignRooms(roomId: string, userId: string) {
 
 };
 
-export async function createUser(formData: FormData) {
 
-    const email = formData.get('email')?.toString();
-    const name = formData.get('name')?.toString();
-    const password = formData.get('password')?.toString();
-    console.log(formData)
-    if (!email || !name || !password) {
-        return { error: 'Email, name, and password are required' };
-    }
+
+export async function signUpUser(name: string, email: string, password: string) {
     try {
-        const result = await prisma.user.create({
-            data: {
-                name,
-                email,
-                password,
-                role: 'user', // Default role, can be changed later
+        await auth.api.signUpEmail({
+            body: {
+                name: name,
+                email: email,
+                password: password
             }
-        });
-        if (isActionError(result)) {
-            return { success: false, description: result.error };
-        } else {
-            return {
-                success: true
-                , description: 'User created successfully!'
-            };
-        }
+        })
+        return {
+            success: true,
+        };
     } catch (error) {
-        console.error('Error creating user:', error);
-
+        const e = error as Error;
+        console.log(e);
+        return {
+            success: false,
+            error: e.message || 'Server error'
+        }
     }
-};
-
-
+}

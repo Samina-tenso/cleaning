@@ -64,3 +64,6 @@ export type newUser = {
     role?: string; // Optional, default can be set in the database
 }
 
+export type FormNotisProps = {
+    message?: string
+}
