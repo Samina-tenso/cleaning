@@ -5,6 +5,7 @@ import { FormValues, OrderedRoomsCreatedProps } from "../types/Form";
 import { Suspense } from "react";
 import { error } from "console";
 import { isActionError } from "../error";
+import { headers } from "next/headers";
 
 
 export async function updateAssignedRooms(data: OrderedRoomsCreatedProps) {
@@ -62,7 +63,28 @@ export async function assignRooms(roomId: string, userId: string) {
 
 };
 
-
+export async function signInUser(email: string, password: string) {
+    try {
+        await auth.api.signInEmail({
+            body: {
+                email: email,
+                password: password,
+                callbackURL: '/sign-in'
+            }
+        });
+        return {
+            success: true,
+            message: "User has been signed in!"
+        };
+    } catch (error) {
+        const e = error as Error;
+        console.log(e);
+        return {
+            success: false,
+            error: e.message || 'Server error'
+        }
+    }
+};
 
 export async function signUpUser(name: string, email: string, password: string) {
     try {
@@ -75,6 +97,41 @@ export async function signUpUser(name: string, email: string, password: string) 
         })
         return {
             success: true,
+        };
+    } catch (error) {
+        const e = error as Error;
+        console.log(e);
+        return {
+            success: false,
+            error: e.message || 'Server error'
+        }
+    }
+};
+export async function getCurrentSession() {
+    try {
+        console.log(await headers(), 'headers in getCurrentSession');
+
+        const session = await auth.api.getSession({
+            headers: await headers(),
+
+        });
+        if (session) {
+            return { user: session.user, error: null };
+        }
+    } catch (error) {
+        console.error('Error fetching session:', error);
+        return { user: null, error: 'Failed to fetch session' };
+    }
+};
+
+export async function logoutUser() {
+    try {
+        await auth.api.signOut({
+            headers: await headers(),
+        });
+        return {
+            success: true,
+            message: "User has been logged out!"
         };
     } catch (error) {
         const e = error as Error;

@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { SetStateAction } from 'react';
-import NavLinks from '../Nav';
+import SidebarNavLinks from '../Nav/SidebarNavLinks';
 import Link from 'next/link';
 import {
     Card,
@@ -103,7 +103,7 @@ export function SideBar() {
                     </ListItem>
                     <AccordionBody className="py-1">
                         //users list
-                        <NavLinks />
+                        <SidebarNavLinks />
                     </AccordionBody>
                 </Accordion>
                 <ListItem>

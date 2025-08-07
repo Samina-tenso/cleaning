@@ -19,6 +19,7 @@ import {
     AccordionBody,
 } from "@material-tailwind/react";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { de } from "zod/locales";
 
 //import users 
 //import rooms
@@ -36,7 +37,7 @@ const links = [
 
 ];
 
-export default function NavLinks() {
+const SidebarNavLinks = () => {
     return (
         <List className="p-0">
             {links.map((link) => (
@@ -55,3 +56,5 @@ export default function NavLinks() {
         </List>
     )
 };
+
+export default SidebarNavLinks;

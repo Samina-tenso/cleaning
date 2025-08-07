@@ -6,14 +6,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { authClient } from "../lib/auth-client"; // adjust path as needed
-import { SignupSchema } from "../lib/signup-schema";
+import { authClient } from "../../lib/auth-client"; // adjust path as needed
+import { SignupSchema } from "../../lib/signup-schema";
 import { on } from "events";
-import { useAuthState } from "../hooks/useAuthState"; // adjust path as needed
-import { signUpUser } from "../api/actions";
+import { useAuthState } from "../../hooks/useAuthState"; // adjust path as needed
+import { signUpUser } from "../../api/actions";
 type SignupFormData = z.infer<typeof SignupSchema>;
 
-export default function SignUpPage() {
+export default function SignUp() {
     const router = useRouter();
     const [message, setMessage] = useState<string | null>(null);
     const { error, setError, success, setSuccess, loading, setLoading, resetState } = useAuthState();
@@ -38,7 +38,7 @@ export default function SignUpPage() {
             const { success, error } = await signUpUser(values.name, values.email, values.password);
             if (success) {
                 setMessage("User has been created!");
-                router.replace("/dashboard");
+                router.push('/dashboard');
             } else {
                 setMessage(error || "An error occurred during sign up");
             }
@@ -90,7 +90,7 @@ export default function SignUpPage() {
                     <Button type="submit" disabled={loading} className="w-full bg-blue-500 text-white p-2 rounded">
                         {loading ? "Signing Up..." : "Sign Up"}
                     </Button>
-                    <p>Already have an account? <Link href="/sign-in" className="text-blue-500">Sign In</Link></p>
+                    <p>Already have an account? <Link href="/auth/sign-in" className="text-blue-500">Sign In</Link></p>
                 </div>
             </form>
         </Card>

@@ -1,5 +1,7 @@
 import { betterAuth } from "better-auth";
 import prisma from "./prisma";
+import { nextCookies } from "better-auth/next-js";
+
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 
 export const auth = betterAuth({
@@ -14,6 +16,7 @@ export const auth = betterAuth({
         minPasswordLength: 6,
         maxPasswordLength: 20
 
-    }
+    },
+    plugins: [nextCookies()] // make sure this is the last plugin in the array
 
 })
