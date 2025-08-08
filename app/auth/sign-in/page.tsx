@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Card, Typography, Input, Button } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,7 @@ import { authClient } from "../../lib/auth-client"; // adjust path as needed
 import { SignInSchema } from "../../lib/signin-schema";
 import { on } from "events";
 import { useAuthState } from "../../hooks/useAuthState"; // adjust path as needed
-import { signInUser } from "../../api/actions";
+import { signInUser } from "../../api/server";
 type SignInFormData = z.infer<typeof SignInSchema>;
 
 export default function SignInPage() {
@@ -35,10 +35,10 @@ export default function SignInPage() {
             const { success, error } = await signInUser(values.email, values.password);
             if (success) {
                 setMessage("User has been signed in!");
-
+                redirect("/dashboard");
             } else {
                 setMessage(error || "An error occurred during sign in");
-                router.replace("/dashboard");
+
             }
         } catch (error: any) {
             setMessage(error?.message || "An error occurred during sign in");

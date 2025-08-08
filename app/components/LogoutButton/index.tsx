@@ -1,6 +1,6 @@
 'use client';
 import React, { use } from "react";
-import { logoutUser } from "../../api/actions";
+import { logoutUser } from "../../api/server";
 import { Button } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

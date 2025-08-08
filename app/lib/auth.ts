@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import prisma from "./prisma";
 import { nextCookies } from "better-auth/next-js";
-
+import { customSession } from "better-auth/plugins";
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 
 export const auth = betterAuth({
@@ -17,6 +17,15 @@ export const auth = betterAuth({
         maxPasswordLength: 20
 
     },
-    plugins: [nextCookies()] // make sure this is the last plugin in the array
+    plugins: [customSession(async ({ user, session }) => {
+        const role = await prisma.user.findUnique({
+            where: { id: session.userId },
+            select: { role: true }
+        });
+        return {
+            ...session,
+            user: { ...user, role: role?.role }
+        };
+    }), nextCookies()] // make sure this is the last plugin in the array
 
 })

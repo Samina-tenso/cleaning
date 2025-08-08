@@ -1,7 +1,7 @@
 'use server'
-import AssignRoomList from '../../components/AssignRoomList';
-import prisma from '../../lib/prisma';
-import { Room, User } from '../../types/Form';
+import AssignRoomList from '../../../components/AssignRoomList';
+import prisma from '../../../lib/prisma';
+import { Room, User } from '../../../types/Form';
 
 
 export default async function AssignPage() {

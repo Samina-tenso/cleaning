@@ -1,4 +1,4 @@
-import prisma from "../../../lib/prisma";
+import prisma from "../../lib/prisma";
 
 
 export default async function User({
@@ -17,5 +17,11 @@ export default async function User({
             assigned: true, // Include the assigned user details
         },
     });
-
+    if (getUserRooms.length === 0) {
+        return (
+            <section className="h-screen flex items-center justify-center">
+                <h2 className="text-2xl font-bold">No rooms assigned to this user.</h2>
+            </section>
+        );
+    }
 };

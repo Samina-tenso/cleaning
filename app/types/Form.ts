@@ -41,7 +41,6 @@ export interface User {
     email: string;
     name: string | null;
     role: string;
-    password: string | null;
     rooms?: Room[] | null; // <-- make this optional
 };
 

@@ -6,7 +6,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { RoomsProps } from '../../types/Form';
 import prisma from '../../lib/prisma';
 import { Button } from '../../types/tailwind_comp'
-import { updateAssignedRooms } from '../../api/actions';
+import { updateAssignedRooms } from '../../api/server';
 import { useState } from 'react';
 
 const users = [

@@ -10,7 +10,7 @@ import { authClient } from "../../lib/auth-client"; // adjust path as needed
 import { SignupSchema } from "../../lib/signup-schema";
 import { on } from "events";
 import { useAuthState } from "../../hooks/useAuthState"; // adjust path as needed
-import { signUpUser } from "../../api/actions";
+import { signUpUser } from "../../api/server";
 type SignupFormData = z.infer<typeof SignupSchema>;
 
 export default function SignUp() {

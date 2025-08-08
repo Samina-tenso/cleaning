@@ -1,5 +1,5 @@
 import React from "react";
-import { FormNotisProps } from '../types/Form'
+import { FormNotisProps } from '../../types/Form'
 
 
 export const FormNotis = ({ message }: FormNotisProps) => {
